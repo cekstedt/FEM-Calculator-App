@@ -1,26 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- displays site properly based on user's device -->
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./images/favicon-32x32.png"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+    <title>Frontend Mentor | Calculator app</title>
+  </head>
+  <body>
+    <main class="container">
+      <article class="calculator">
+        <h1>calc</h1>
+        <output name="result">0</output>
+        <ul class="theme-labels">
+          <li>1</li>
+          <li>2</li>
+          <li>3</li>
+        </ul>
+        <input
+          type="range"
+          min="1"
+          max="3"
+          value="1"
+          class="theme-selector"
+          id="theme-selector"
+        />
+        <div class="calculator-keys">
+          <button type="button" name="7">7</button>
+          <button type="button" name="8">8</button>
+          <button type="button" name="9">9</button>
+          <button type="button" name="DELETE">DEL</button>
+          <button type="button" name="4">4</button>
+          <button type="button" name="5">5</button>
+          <button type="button" name="6">6</button>
+          <button type="button" name="ADD">+</button>
+          <button type="button" name="1">1</button>
+          <button type="button" name="2">2</button>
+          <button type="button" name="3">3</button>
+          <button type="button" name="SUBTRACT">-</button>
+          <button type="button" name="DECIMAL">.</button>
+          <button type="button" name="0">0</button>
+          <button type="button" name="DIVIDE">/</button>
+          <button type="button" name="MULTIPLY">*</button>
+          <button type="button" name="RESET">RESET</button>
+          <button type="button" name="EQUALS">=</button>
+        </div>
+      </article>
+    </main>
 
-  <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
-  
-  <title>Frontend Mentor | Calculator app</title>
+    <footer class="attribution">
+      Challenge by
+      <a href="https://www.frontendmentor.io?ref=challenge" target="_blank"
+        >Frontend Mentor</a
+      >. Coded by <a href="#">Your Name Here</a>.
+    </footer>
 
-  <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
-  <style>
-    .attribution { font-size: 11px; text-align: center; }
-    .attribution a { color: hsl(228, 45%, 44%); }
-  </style>
-</head>
-<body>
-
-
-  
-  <div class="attribution">
-    Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. 
-    Coded by <a href="#">Your Name Here</a>.
-  </div>
-</body>
+    <script type="module" src="./src/main.js"></script>
+  </body>
 </html>
