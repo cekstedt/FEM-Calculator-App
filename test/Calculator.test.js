@@ -15,4 +15,12 @@ describe("Numerical test", () => {
       expect(testCalc.getDisplay()).toBe(key);
     }
   });
+
+  it("displays multi-digit numbers correctly.", () => {
+    testCalc = new Calculator();
+    for (const key of "1234567890") {
+      testCalc.press(key);
+    }
+    expect(testCalc.getDisplay()).toBe("1234567890");
+  });
 });

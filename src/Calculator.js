@@ -15,7 +15,7 @@ class Calculator {
   }
 
   press(key) {
-    if (Calculator.#validKeys.contains(key)) {
+    if (Calculator.#validKeys.includes(key)) {
       this.display += key;
 
       // Cleanup
