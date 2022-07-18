@@ -25,7 +25,7 @@ keys.addEventListener("click", e => {
     const key = e.target;
     const name = key.name;
     if (Object.keys(keyMap).includes(name)) {
-      calc.press(name);
+      calc.press(keyMap[name]);
       result.textContent = calc.getDisplay();
     }
   }
