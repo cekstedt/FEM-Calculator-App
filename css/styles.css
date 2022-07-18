@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=League+Spartan:wght@700&display=swap");
+
 /* Document */
 
 body {
@@ -14,11 +16,62 @@ body {
 
 /* Component */
 
-.calculator-keys {
+.calculator {
+  font-family: "League Spartan", sans-serif;
+  font-weight: 700;
+  font-size: 32px;
+  background-color: red;
+  max-width: 540px;
+  padding: 0;
+  position: relative;
+}
+
+.theme-container {
+  background-color: yellow;
+  width: 50%;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.theme-title {
+  float: left;
+  font-size: 1rem;
+}
+
+.theme-labels {
+  position: absolute;
+  font-size: 1rem;
+  right: 0;
+  top: 0;
+}
+
+.theme-label {
+  display: inline-block;
+}
+
+.output {
+  background-color: purple;
+  display: block;
+  text-align: right;
+}
+
+.calculator-keys-container {
   background-color: #999;
   display: grid;
   grid-gap: 1px;
   grid-template-columns: repeat(4, 1fr);
+}
+
+.calculator-key {
+  font-size: inherit;
+  font-weight: inherit;
+  font-family: inherit;
+}
+
+#RESET,
+#EQUALS {
+  grid-column: auto / span 2;
 }
 
 /* Footer */

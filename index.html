@@ -16,40 +16,111 @@
   <body>
     <main class="container">
       <article class="calculator">
-        <h1>calc</h1>
-        <ul class="theme-labels">
-          <li>1</li>
-          <li>2</li>
-          <li>3</li>
-        </ul>
-        <input
-          type="range"
-          min="1"
-          max="3"
-          value="1"
-          class="theme-selector"
-          id="theme-selector"
-        />
-        <output name="result" id="result">0</output>
-        <div class="calculator-keys">
-          <button type="button" name="7">7</button>
-          <button type="button" name="8">8</button>
-          <button type="button" name="9">9</button>
-          <button type="button" name="DELETE">DEL</button>
-          <button type="button" name="4">4</button>
-          <button type="button" name="5">5</button>
-          <button type="button" name="6">6</button>
-          <button type="button" name="ADD">+</button>
-          <button type="button" name="1">1</button>
-          <button type="button" name="2">2</button>
-          <button type="button" name="3">3</button>
-          <button type="button" name="SUBTRACT">-</button>
-          <button type="button" name="DECIMAL">.</button>
-          <button type="button" name="0">0</button>
-          <button type="button" name="DIVIDE">/</button>
-          <button type="button" name="MULTIPLY">*</button>
-          <button type="button" name="RESET">RESET</button>
-          <button type="button" name="EQUALS">=</button>
+        <div class="calculator-header">
+          <h1>calc</h1>
+          <div class="theme-container">
+            <ul class="theme-labels">
+              <li class="theme-label">1</li>
+              <li class="theme-label">2</li>
+              <li class="theme-label">3</li>
+            </ul>
+            <p class="theme-title">THEME</p>
+            <input
+              type="range"
+              min="1"
+              max="3"
+              value="1"
+              class="theme-selector"
+              id="theme-selector"
+            />
+          </div>
+          <output name="result" id="result" class="output">0</output>
+        </div>
+        <div class="calculator-keys-container">
+          <button type="button" class="calculator-key" name="7" id="7">
+            7
+          </button>
+          <button type="button" class="calculator-key" name="8" id="8">
+            8
+          </button>
+          <button type="button" class="calculator-key" name="9" id="9">
+            9
+          </button>
+          <button
+            type="button"
+            class="calculator-key"
+            name="DELETE"
+            id="DELETE"
+          >
+            DEL
+          </button>
+          <button type="button" class="calculator-key" name="4" id="4">
+            4
+          </button>
+          <button type="button" class="calculator-key" name="5" id="5">
+            5
+          </button>
+          <button type="button" class="calculator-key" name="6" id="6">
+            6
+          </button>
+          <button type="button" class="calculator-key" name="ADD" id="ADD">
+            +
+          </button>
+          <button type="button" class="calculator-key" name="1" id="1">
+            1
+          </button>
+          <button type="button" class="calculator-key" name="2" id="2">
+            2
+          </button>
+          <button type="button" class="calculator-key" name="3" id="3">
+            3
+          </button>
+          <button
+            type="button"
+            class="calculator-key"
+            name="SUBTRACT"
+            id="SUBTRACT"
+          >
+            -
+          </button>
+          <button
+            type="button"
+            class="calculator-key"
+            name="DECIMAL"
+            id="DECIMAL"
+          >
+            .
+          </button>
+          <button type="button" class="calculator-key" name="0" id="0">
+            0
+          </button>
+          <button
+            type="button"
+            class="calculator-key"
+            name="DIVIDE"
+            id="DIVIDE"
+          >
+            /
+          </button>
+          <button
+            type="button"
+            class="calculator-key"
+            name="MULTIPLY"
+            id="MULTIPLY"
+          >
+            x
+          </button>
+          <button type="button" class="calculator-key" name="RESET" id="RESET">
+            RESET
+          </button>
+          <button
+            type="button"
+            class="calculator-key"
+            name="EQUALS"
+            id="EQUALS"
+          >
+            =
+          </button>
         </div>
       </article>
     </main>
