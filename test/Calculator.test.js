@@ -1,8 +1,7 @@
 import Calculator from "../src/Calculator";
+let testCalc;
 
 describe("Numerical input", () => {
-  let testCalc;
-
   it("displays only a zero on creation.", () => {
     testCalc = new Calculator();
     expect(testCalc.getDisplay()).toBe("0");
@@ -202,6 +201,55 @@ describe("Edge cases: Equals button.", () => {
   });
 });
 
-// Reset key functions
+describe("Delete key function", () => {
+  it("removes entered numbers and decimals.", () => {
+    testCalc = new Calculator();
+    testCalc.pressMany("123.456D");
+    expect(testCalc.getDisplay()).toBe("123.45");
+    testCalc.press("D");
+    expect(testCalc.getDisplay()).toBe("123.4");
+    testCalc.press("D");
+    expect(testCalc.getDisplay()).toBe("123.");
+    testCalc.press("D");
+    expect(testCalc.getDisplay()).toBe("123");
+    testCalc.press("D");
+    expect(testCalc.getDisplay()).toBe("12");
+    testCalc.press("D");
+    expect(testCalc.getDisplay()).toBe("1");
+    testCalc.press("D");
+    expect(testCalc.getDisplay()).toBe("0");
+    testCalc.press("D");
+    expect(testCalc.getDisplay()).toBe("0");
+    testCalc.press("D");
+    expect(testCalc.getDisplay()).toBe("0");
+  });
 
-// Delete key functions
+  it("has no effect after operators.", () => {
+    testCalc = new Calculator();
+    testCalc.pressMany("1+D");
+    expect(testCalc.getDisplay()).toBe("1");
+    expect(testCalc.getActiveOperator()).toBe("+");
+  });
+
+  it("has no effect after equals.", () => {
+    testCalc = new Calculator();
+    testCalc.pressMany("1+2=D");
+    expect(testCalc.getDisplay()).toBe("3");
+    expect(testCalc.getActiveOperator()).toBe("");
+  });
+});
+
+describe("Reset key function", () => {
+  it("clears display and active operator.", () => {
+    testCalc = new Calculator();
+    testCalc.pressMany("1+2*3=C");
+    expect(testCalc.getDisplay()).toBe("0");
+    expect(testCalc.getActiveOperator()).toBe("");
+  });
+
+  it("does not leave behind any artifacts.", () => {
+    testCalc = new Calculator();
+    testCalc.pressMany("1+2=C6====");
+    expect(testCalc.getDisplay()).toBe("6");
+  });
+});
