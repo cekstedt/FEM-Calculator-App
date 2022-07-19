@@ -103,6 +103,12 @@ body {
   width: 11.5rem;
 }
 
+#RESET,
+#EQUALS,
+#DELETE {
+  font-size: 1.5rem;
+}
+
 /* Footer */
 
 footer {
