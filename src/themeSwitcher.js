@@ -10,8 +10,8 @@ let themes = {
     key_background_3: "hsl(30, 25%, 89%)",
     key_shadow_3: "hsl(28, 16%, 65%)",
     text: "hsl(221, 14%, 31%)",
-    text_equals: "hsl(0, 0, 100%)",
-    text_white: "hsl(0, 0, 100%)"
+    text_equals: "hsl(0, 0%, 100%)",
+    text_white: "hsl(0, 0%, 100%)"
   },
   theme_2: {
     main_background: "hsl(0, 0%, 90%)",
