@@ -1,71 +1,60 @@
 class Calculator {
-  static #operands = {
+  // Variable initialization.
+
+  #operators = {
     "+": (a, b) => a + b,
     "-": (a, b) => a - b,
     "/": (a, b) => a / b,
     "*": (a, b) => a * b
   };
 
-  static #validKeys = [..."0123456789CD.±="].concat(
-    Object.keys(Calculator.#operands)
-  );
+  #numerals = [..."0123456789"];
+
+  #validKeys = [..."CD.±="]
+    .concat(Object.keys(this.#operators))
+    .concat(this.#numerals);
+
+  #pressMap = new Map();
 
   #hiddenOperand;
   #lastOperator;
   #lastKeyOperatorFlag;
 
+  // Constructor.
+
   constructor() {
+    for (const num of this.#numerals) {
+      this.#pressMap.set(num, this.#numeralKey.bind(this));
+    }
+    for (const op in this.#operators) {
+      this.#pressMap.set(op, this.#operatorKey.bind(this));
+    }
+    this.#pressMap.set("C", this.#reset.bind(this));
+    this.#pressMap.set("D", this.#deleteKey.bind(this));
+    this.#pressMap.set(".", this.#decimalKey.bind(this));
+    this.#pressMap.set("±", this.#negateKey.bind(this));
+    this.#pressMap.set("=", this.#equalsKey.bind(this));
+
     this.#reset();
   }
 
-  press(key) {
-    if (Calculator.#validKeys.includes(key)) {
-      if ("0123456789".includes(key)) {
-        if (this.#lastKeyOperatorFlag) {
-          this.display = key;
-          this.#lastKeyOperatorFlag = false;
-          this.#lastOperator = this.activeOperator;
-          this.activeOperator = "";
-        } else {
-          this.display += key;
-        }
-        this.activeOperator = "";
-      } else if (key === "." && !this.display.includes(".")) {
-        if (this.#lastKeyOperatorFlag) {
-          this.display = "0.";
-          this.#lastOperator = this.activeOperator;
-          this.activeOperator = "";
-          this.#lastKeyOperatorFlag = false;
-        } else {
-          this.display += ".";
-        }
-      } else if (key === "D") {
-        this.display = this.display.slice(0, this.display.length - 1);
-      } else if (key === "C") {
-        this.#reset();
-      } else if (Object.keys(Calculator.#operands).includes(key)) {
-        this.activeOperator = key;
-        this.#hiddenOperand = parseFloat(this.display);
-        this.#lastKeyOperatorFlag = true;
-      } else if (key === "=") {
-        let temp = parseFloat(this.display);
-        this.display =
-          "" +
-          Calculator.#operands[this.#lastOperator](this.#hiddenOperand, temp);
-        this.#hiddenOperand = temp;
-      } else {
-        console.log(key + ": not found?");
-      }
+  // Main entry point. Delegates keypress data to computing functions.
 
-      this.#cleanupDisplay();
-    }
+  press(key) {
+    this.#pressMap.get(key)(key);
+
+    this.#cleanupDisplay();
   }
+
+  // Convenience method, to send a string of 1 char keypresses.
 
   pressMany(keys) {
     for (const key of keys) {
       this.press(key);
     }
   }
+
+  // Getters for outfacing data.
 
   getDisplay() {
     return this.display;
@@ -75,12 +64,58 @@ class Calculator {
     return this.activeOperator;
   }
 
+  // Operational functions.
+
   #reset() {
     this.display = "0";
     this.activeOperator = "";
     this.#hiddenOperand = 0;
     this.#lastKeyOperatorFlag = false;
     this.#lastOperator = "";
+  }
+
+  #numeralKey(key) {
+    if (this.#lastKeyOperatorFlag) {
+      this.display = key;
+      this.#lastKeyOperatorFlag = false;
+      this.#lastOperator = this.activeOperator;
+      this.activeOperator = "";
+    } else {
+      this.display += key;
+    }
+    this.activeOperator = "";
+  }
+
+  #operatorKey(key) {
+    this.activeOperator = key;
+    this.#hiddenOperand = parseFloat(this.display);
+    this.#lastKeyOperatorFlag = true;
+  }
+
+  #equalsKey() {
+    let temp = parseFloat(this.display);
+    this.display =
+      "" + this.#operators[this.#lastOperator](this.#hiddenOperand, temp);
+    this.#hiddenOperand = temp;
+  }
+
+  #negateKey() {}
+
+  #decimalKey() {
+    if (!this.display.includes(".")) {
+      if (this.#lastKeyOperatorFlag) {
+        this.display = "0.";
+        this.#lastOperator = this.activeOperator;
+        this.activeOperator = "";
+        this.#lastKeyOperatorFlag = false;
+      } else {
+        this.display += ".";
+      }
+    }
+  }
+
+  #deleteKey() {
+    this.display = this.display.slice(0, this.display.length - 1);
   }
 
   #cleanupDisplay() {
