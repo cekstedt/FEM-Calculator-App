@@ -149,7 +149,16 @@ class Calculator {
     this.#lastKeyEqualsFlag = true;
   }
 
-  #negateKey() {}
+  #negateKey() {
+    if (this.#lastKeyOperatorFlag || this.#lastKeyEqualsFlag) {
+      this.#hiddenOperand = parseFloat(this.display);
+      this.#lastOperator = this.activeOperator;
+      this.activeOperator = "";
+    }
+    this.display = "" + parseFloat(this.display) * -1;
+    this.#lastKeyOperatorFlag = false;
+    this.#lastKeyEqualsFlag = false;
+  }
 
   #decimalKey() {
     if (!this.display.includes(".")) {
@@ -157,7 +166,6 @@ class Calculator {
         this.display = "0.";
         this.#lastOperator = this.activeOperator;
         this.activeOperator = "";
-        this.#lastKeyOperatorFlag = false;
       } else {
         this.display += ".";
       }

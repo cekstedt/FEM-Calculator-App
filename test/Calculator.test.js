@@ -256,3 +256,43 @@ describe("Reset key function", () => {
     expect(testCalc.getDisplay()).toBe("6");
   });
 });
+
+describe("Negate key function", () => {
+  it("properly negates numbers.", () => {
+    testCalc.pressMany("12±");
+    expect(testCalc.getDisplay()).toBe("-12");
+    testCalc.pressMany("34");
+    expect(testCalc.getDisplay()).toBe("-1234");
+    testCalc.pressMany("±56");
+    expect(testCalc.getDisplay()).toBe("123456");
+  });
+
+  it("has no effect on zero.", () => {
+    testCalc.press("±");
+    expect(testCalc.getDisplay()).toBe("0");
+    testCalc.press("±");
+    expect(testCalc.getDisplay()).toBe("0");
+  });
+
+  it("negates original operand after operators.", () => {
+    testCalc.pressMany("1+±");
+    expect(testCalc.getDisplay()).toBe("-1");
+    expect(testCalc.getActiveOperator()).toBe("");
+    testCalc.press("=");
+    expect(testCalc.getDisplay()).toBe("0");
+    expect(testCalc.getActiveOperator()).toBe("");
+  });
+
+  it("negates display after equals.", () => {
+    testCalc.pressMany("1+2=±");
+    expect(testCalc.getDisplay()).toBe("-3");
+    expect(testCalc.getActiveOperator()).toBe("");
+    testCalc.press("±");
+    expect(testCalc.getDisplay()).toBe("3");
+    testCalc.press("±");
+    expect(testCalc.getDisplay()).toBe("-3");
+    testCalc.pressMany("+3=");
+    expect(testCalc.getDisplay()).toBe("0");
+    expect(testCalc.getActiveOperator()).toBe("");
+  });
+});
