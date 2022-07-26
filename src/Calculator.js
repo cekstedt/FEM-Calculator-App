@@ -17,8 +17,10 @@ class Calculator {
   #pressMap = new Map();
 
   #hiddenOperand;
+  #chainValue;
   #lastOperator;
   #lastKeyOperatorFlag;
+  #lastKeyEqualsFlag;
 
   // Constructor.
 
@@ -42,7 +44,6 @@ class Calculator {
 
   press(key) {
     this.#pressMap.get(key)(key);
-
     this.#cleanupDisplay();
   }
 
@@ -71,32 +72,81 @@ class Calculator {
     this.activeOperator = "";
     this.#hiddenOperand = 0;
     this.#lastKeyOperatorFlag = false;
+    this.#lastKeyEqualsFlag = false;
     this.#lastOperator = "";
   }
 
   #numeralKey(key) {
-    if (this.#lastKeyOperatorFlag) {
+    if (this.#lastKeyOperatorFlag || this.#lastKeyEqualsFlag) {
       this.display = key;
-      this.#lastKeyOperatorFlag = false;
       this.#lastOperator = this.activeOperator;
-      this.activeOperator = "";
     } else {
       this.display += key;
     }
+    this.#lastKeyOperatorFlag = false;
+    this.#lastKeyEqualsFlag = false;
     this.activeOperator = "";
   }
 
   #operatorKey(key) {
+    if (!this.#lastKeyOperatorFlag) {
+      this.#equalsKey();
+    }
     this.activeOperator = key;
-    this.#hiddenOperand = parseFloat(this.display);
     this.#lastKeyOperatorFlag = true;
+    this.#lastKeyEqualsFlag = false;
   }
 
   #equalsKey() {
-    let temp = parseFloat(this.display);
-    this.display =
-      "" + this.#operators[this.#lastOperator](this.#hiddenOperand, temp);
-    this.#hiddenOperand = temp;
+    let operand1;
+    let operand2;
+    let operator;
+
+    // If there is no #lastOperator, then the only options are
+    // "number=" or "number{op}="
+    if (!this.#lastOperator) {
+      if (!this.#lastKeyOperatorFlag) {
+        // If last key was a number, treat equals as solo equality operator.
+        // Eg: "20=".
+        // RETURNS IMMEDIATELY.
+        this.#hiddenOperand = parseFloat(this.display);
+        this.#lastKeyEqualsFlag = true;
+        return;
+
+        // If last key was an operator, repeat the previous numerical input.
+        // ex: "3*=" becomes "3*3=".
+      } else {
+        this.#lastOperator = this.activeOperator;
+        operator = this.#operators[this.#lastOperator];
+        operand1 = this.#hiddenOperand;
+        operand2 = this.#hiddenOperand;
+        this.#hiddenOperand = parseFloat(this.display);
+      }
+
+      // Otherwise, proceed using existing #lastOperator.
+    } else {
+      operator = this.#operators[this.#lastOperator];
+
+      // If last key was equals, repeat the previous calculation,
+      // but switch the operands (since we display the result,
+      // which should be operand1). Also, use #chainValue
+      // as operand2, for operator chaining. eg: "3*2===="
+      if (this.#lastKeyEqualsFlag) {
+        operand1 = parseFloat(this.display);
+        operand2 = this.#chainValue;
+
+        // Otherwise, last key was numerical (or editing). Calculate as normal.
+      } else {
+        operand1 = this.#hiddenOperand;
+        operand2 = parseFloat(this.display);
+        this.#hiddenOperand = operator(operand1, operand2);
+      }
+    }
+
+    // Main exit point.
+    this.display = "" + operator(operand1, operand2);
+    this.#chainValue = operand2;
+    this.#lastKeyEqualsFlag = true;
   }
 
   #negateKey() {}
@@ -112,6 +162,8 @@ class Calculator {
         this.display += ".";
       }
     }
+    this.#lastKeyOperatorFlag = false;
+    this.#lastKeyEqualsFlag = false;
   }
 
   #deleteKey() {

@@ -97,6 +97,11 @@ describe("Edge cases: Operators", () => {
     expect(testCalc.getActiveOperator()).toBe("-");
   });
 
+  it("...And does not alter hidden operand.", () => {
+    testCalc.pressMany("6*+7=");
+    expect(testCalc.getDisplay()).toBe("13");
+  });
+
   it("calculates (equals) on second operator press.", () => {
     testCalc.pressMany("4*8+");
     expect(testCalc.getDisplay()).toBe("32");
@@ -144,9 +149,27 @@ describe("Edge cases: Equals button.", () => {
     expect(testCalc.getDisplay()).toBe("4.9");
   });
 
+  it("...even multiple times.", () => {
+    testCalc.pressMany("10=====");
+    expect(testCalc.getDisplay()).toBe("10");
+    testCalc.pressMany("23=====");
+    expect(testCalc.getDisplay()).toBe("23");
+    testCalc.pressMany("4.9====");
+    expect(testCalc.getDisplay()).toBe("4.9");
+  });
+
   it("treats op-equals like a repeated operand.", () => {
     testCalc.pressMany("3*=");
     expect(testCalc.getDisplay()).toBe("9");
+  });
+
+  it("op-equals can be chained.", () => {
+    testCalc.pressMany("3*=");
+    expect(testCalc.getDisplay()).toBe("9");
+    testCalc.press("=");
+    expect(testCalc.getDisplay()).toBe("27");
+    testCalc.press("=");
+    expect(testCalc.getDisplay()).toBe("81");
   });
 
   it("repeats calculations on equals presses.", () => {
@@ -204,13 +227,19 @@ describe("Delete key function", () => {
 
   it("has no effect after operators.", () => {
     testCalc.pressMany("1+D");
-    expect(testCalc.getDisplay()).toBe("1");
+    expect(testCalc.getDisplay()).toBe("0");
     expect(testCalc.getActiveOperator()).toBe("+");
+    testCalc.pressMany("2=");
+    expect(testCalc.getDisplay()).toBe("3");
+    expect(testCalc.getActiveOperator()).toBe("");
   });
 
   it("has no effect after equals.", () => {
     testCalc.pressMany("1+2=D");
-    expect(testCalc.getDisplay()).toBe("3");
+    expect(testCalc.getDisplay()).toBe("0");
+    expect(testCalc.getActiveOperator()).toBe("");
+    testCalc.pressMany("+3=");
+    expect(testCalc.getDisplay()).toBe("6");
     expect(testCalc.getActiveOperator()).toBe("");
   });
 });
