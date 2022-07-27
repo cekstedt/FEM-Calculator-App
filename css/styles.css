@@ -123,6 +123,11 @@ body {
   box-shadow: 0 0.25rem var(--key_shadow_3);
 }
 
+.active-button,
+.calculator-key:active {
+  filter: brightness(150%);
+}
+
 #RESET,
 #EQUALS {
   grid-column: auto / span 2;
@@ -147,6 +152,10 @@ body {
   box-shadow: 0 0.25rem var(--key_shadow_2);
   color: var(--text_equals);
 }
+
+/* #EQUALS:active {
+  filter: brightness(120%);
+} */
 
 /* Footer */
 
