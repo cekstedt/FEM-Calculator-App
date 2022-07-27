@@ -12,16 +12,13 @@ const keyMap = {
   DELETE: "D",
   EQUALS: "=",
   //The rest of the key/value pairs are symmetrical.
-  ...[..."0123456789"].reduce((obj, x) => {
-    obj[x] = x;
-    return obj;
-  }, {})
+  ...makeSymmetricalObject([..."0123456789"])
 };
 
 // Hook up buttons and result field with Calculator object.
-const keys = document.querySelector(".calculator-keys-container");
+const keysContainer = document.querySelector(".calculator-keys-container");
 const result = document.getElementById("result");
-keys.addEventListener("click", e => {
+keysContainer.addEventListener("click", e => {
   if (e.target.matches("button")) {
     const key = e.target;
     const name = key.name;
@@ -29,6 +26,26 @@ keys.addEventListener("click", e => {
       calc.press(keyMap[name]);
       result.textContent = calc.getDisplay();
     }
+  }
+});
+
+// Hook up keyboard keys with Calculator object.
+const keyboardKeys = new Set(
+  [..."0123456789.+-/*=Cc"].concat(["Backspace", "Enter"])
+);
+
+document.addEventListener("keydown", function(event) {
+  if (keyboardKeys.has(event.key)) {
+    if (event.key === "c") {
+      calc.press("C");
+    } else if (event.key === "Backspace") {
+      calc.press("D");
+    } else if (event.key === "Enter") {
+      calc.press("=");
+    } else {
+      calc.press(event.key);
+    }
+    result.textContent = calc.getDisplay();
   }
 });
 
@@ -41,3 +58,14 @@ range.addEventListener("input", e => {
     root.style.setProperty("--" + key, value);
   }
 });
+
+// Utility functions.
+
+// Makes an object from an array where each key is also the value.
+// ex: ["a", "b", "c"] => "{a: "a", b: "b", c: "c"}"
+function makeSymmetricalObject(arr) {
+  return arr.reduce((obj, x) => {
+    obj[x] = x;
+    return obj;
+  }, {});
+}

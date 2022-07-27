@@ -235,11 +235,11 @@ describe("Delete key function", () => {
   });
 
   it("has no effect after equals.", () => {
-    testCalc.pressMany("1+2=D");
-    expect(testCalc.getDisplay()).toBe("0");
+    testCalc.pressMany("111+222=DD");
+    expect(testCalc.getDisplay()).toBe("333");
     expect(testCalc.getActiveOperator()).toBe("");
-    testCalc.pressMany("+3=");
-    expect(testCalc.getDisplay()).toBe("6");
+    testCalc.pressMany("+333=");
+    expect(testCalc.getDisplay()).toBe("666");
     expect(testCalc.getActiveOperator()).toBe("");
   });
 });
