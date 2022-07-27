@@ -178,7 +178,12 @@ class Calculator {
   }
 
   #deleteKey() {
-    this.display = this.display.slice(0, this.display.length - 1);
+    if (!this.#lastKeyEqualsFlag) {
+      this.display = this.display.slice(0, this.display.length - 1);
+    }
+    if (this.#lastKeyOperatorFlag) {
+      this.display = "0";
+    }
   }
 
   // Utility Functions.

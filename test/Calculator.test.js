@@ -226,12 +226,24 @@ describe("Delete key function", () => {
   });
 
   it("has no effect after operators.", () => {
-    testCalc.pressMany("1+D");
+    testCalc.pressMany("111+D");
     expect(testCalc.getDisplay()).toBe("0");
     expect(testCalc.getActiveOperator()).toBe("+");
-    testCalc.pressMany("2=");
-    expect(testCalc.getDisplay()).toBe("3");
+    testCalc.pressMany("222=");
+    expect(testCalc.getDisplay()).toBe("333");
     expect(testCalc.getActiveOperator()).toBe("");
+  });
+
+  it("can still replace operator after delete.", () => {
+    testCalc.pressMany("111+D");
+    expect(testCalc.getDisplay()).toBe("0");
+    expect(testCalc.getActiveOperator()).toBe("+");
+    testCalc.press("-");
+    expect(testCalc.getDisplay()).toBe("0");
+    expect(testCalc.getActiveOperator()).toBe("-");
+    testCalc.press("*");
+    expect(testCalc.getDisplay()).toBe("0");
+    expect(testCalc.getActiveOperator()).toBe("*");
   });
 
   it("has no effect after equals.", () => {
