@@ -38,7 +38,10 @@ body {
   font-weight: 700;
   font-size: 32px;
   background-color: var(--main_background);
-  max-width: 540px;
+  max-width: 27rem;
+  width: 90vw;
+  max-height: 35.46rem;
+  height: 95vh;
   padding: 0;
   position: relative;
 }
@@ -58,7 +61,7 @@ body {
 
 .theme-container {
   background-color: var(--main_background);
-  width: 35%;
+  width: 9.45rem;
   position: absolute;
   right: 0;
   top: 0;
@@ -84,6 +87,21 @@ body {
   display: inline-block;
   margin-left: 0.25rem;
   margin-right: 0.4rem;
+}
+
+/* Mobile Changes */
+
+@media (max-width: 432px) {
+  .theme-labels {
+    display: flex;
+    justify-content: center;
+    margin: auto 0 0 1rem;
+  }
+
+  .theme-label {
+    margin-left: 0.35rem;
+    margin-right: 0.35rem;
+  }
 }
 
 .output {
@@ -114,8 +132,8 @@ body {
   font-size: inherit;
   font-weight: inherit;
   font-family: inherit;
-  width: 5rem;
-  height: 3rem;
+  max-width: 5rem;
+  max-height: 3rem;
   line-height: 3.25rem;
   border-radius: 0.5rem;
   border: 0;
@@ -131,7 +149,7 @@ body {
 #RESET,
 #EQUALS {
   grid-column: auto / span 2;
-  width: 11.5rem;
+  max-width: 11.5rem;
 }
 
 #RESET,
@@ -152,10 +170,6 @@ body {
   box-shadow: 0 0.25rem var(--key_shadow_2);
   color: var(--text_equals);
 }
-
-/* #EQUALS:active {
-  filter: brightness(120%);
-} */
 
 /* Footer */
 
