@@ -18,7 +18,7 @@ describe("Numerical input", () => {
 
   it("displays multi-digit numbers correctly.", () => {
     testCalc.pressMany("1234567890");
-    expect(testCalc.getDisplay()).toBe("1234567890");
+    expect(testCalc.getDisplay()).toBe("1,234,567,890");
   });
 });
 
@@ -262,9 +262,9 @@ describe("Negate key function", () => {
     testCalc.pressMany("12±");
     expect(testCalc.getDisplay()).toBe("-12");
     testCalc.pressMany("34");
-    expect(testCalc.getDisplay()).toBe("-1234");
+    expect(testCalc.getDisplay()).toBe("-1,234");
     testCalc.pressMany("±56");
-    expect(testCalc.getDisplay()).toBe("123456");
+    expect(testCalc.getDisplay()).toBe("123,456");
   });
 
   it("has no effect on zero.", () => {
@@ -294,5 +294,58 @@ describe("Negate key function", () => {
     testCalc.pressMany("+3=");
     expect(testCalc.getDisplay()).toBe("0");
     expect(testCalc.getActiveOperator()).toBe("");
+  });
+});
+
+describe("Proper output formatting", () => {
+  it("places commas in input where appropriate.", () => {
+    testCalc.pressMany("1234");
+    expect(testCalc.getDisplay()).toBe("1,234");
+    testCalc.press("5");
+    expect(testCalc.getDisplay()).toBe("12,345");
+    testCalc.pressMany("678901");
+    expect(testCalc.getDisplay()).toBe("12,345,678,901");
+    testCalc.press(".");
+    expect(testCalc.getDisplay()).toBe("12,345,678,901.");
+    testCalc.pressMany("23");
+    expect(testCalc.getDisplay()).toBe("12,345,678,901.23");
+  });
+  it("places commas in result where appropriate.", () => {
+    testCalc.pressMany("1000*1000=");
+    expect(testCalc.getDisplay()).toBe("1,000,000");
+    testCalc.pressMany("1000.5*1000.5=");
+    expect(testCalc.getDisplay()).toBe("1,001,000.25");
+  });
+  it("stops taking input after maximum digits.", () => {
+    testCalc.pressMany("12345678901234567");
+    expect(testCalc.getDisplay()).toBe("1,234,567,890,123,456");
+    testCalc.pressMany("890");
+    expect(testCalc.getDisplay()).toBe("1,234,567,890,123,456");
+    testCalc.press("±");
+    expect(testCalc.getDisplay()).toBe("-1,234,567,890,123,456");
+    testCalc.press(".");
+    expect(testCalc.getDisplay()).toBe("-1,234,567,890,123,456.");
+    testCalc.pressMany("7890");
+    expect(testCalc.getDisplay()).toBe("-1,234,567,890,123,456.");
+    testCalc.pressMany("C1234567.8901234567890");
+    expect(testCalc.getDisplay()).toBe("1,234,567.890123456");
+  });
+  it("uses a rounded scientific notation for long results.", () => {
+    testCalc.pressMany("4294967296*4294967296=");
+    expect(testCalc.getDisplay()).toBe("1.844674407370955e+19");
+    testCalc.pressMany("C1000000000000000*10=");
+    expect(testCalc.getDisplay()).toBe("1.e+16");
+  });
+  it("only uses scientific notation after maximum decimal places.", () => {
+    testCalc.pressMany("0.000000000000001/10=");
+    expect(testCalc.getDisplay()).toBe("0.0000000000000001");
+    testCalc.pressMany("/10=");
+    expect(testCalc.getDisplay()).toBe("1.e-17");
+  });
+  it("doesn't lose accuracy on chained operations.", () => {
+    testCalc.pressMany("1/3=");
+    expect(testCalc.getDisplay()).toBe("0.333333333333333");
+    testCalc.pressMany("*3=");
+    expect(testCalc.getDisplay()).toBe("1");
   });
 });

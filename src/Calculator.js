@@ -21,6 +21,7 @@ class Calculator {
   #lastOperator;
   #lastKeyOperatorFlag;
   #lastKeyEqualsFlag;
+  #MAX_DIGITS = 16;
 
   // Constructor.
 
@@ -43,6 +44,7 @@ class Calculator {
   // Main entry point. Delegates keypress data to computing functions.
 
   press(key) {
+    this.display = this.display.replaceAll(",", "");
     this.#pressMap.get(key)(key);
     this.#cleanupDisplay();
   }
@@ -70,17 +72,18 @@ class Calculator {
   #reset() {
     this.display = "0";
     this.activeOperator = "";
-    this.#hiddenOperand = 0;
+    this.#hiddenOperand = null;
     this.#lastKeyOperatorFlag = false;
     this.#lastKeyEqualsFlag = false;
     this.#lastOperator = "";
+    this.#chainValue = null;
   }
 
   #numeralKey(key) {
     if (this.#lastKeyOperatorFlag || this.#lastKeyEqualsFlag) {
       this.display = key;
       this.#lastOperator = this.activeOperator;
-    } else {
+    } else if (this.#digitSpace(this.#MAX_DIGITS)) {
       this.display += key;
     }
     this.#lastKeyOperatorFlag = false;
@@ -178,10 +181,15 @@ class Calculator {
     this.display = this.display.slice(0, this.display.length - 1);
   }
 
+  // Utility Functions.
+
   #cleanupDisplay() {
+    // Turn empty inputs into zero.
     if (["", "-", "-0"].includes(this.display)) {
       this.display = "0";
     }
+
+    // Trim leading zeroes when not necessary.
     if (
       this.display.length > 1 &&
       this.display[0] === "0" &&
@@ -189,6 +197,48 @@ class Calculator {
     ) {
       this.display = this.display.slice(1);
     }
+
+    // Add commas where necessary
+    if (this.display.includes(".")) {
+      let [whole, fractional] = this.display.split(".");
+      this.display = this.#addCommas(whole) + "." + fractional;
+    } else {
+      this.display = this.#addCommas(this.display);
+    }
+
+    // // Truncate decimals when too long.
+    // if (
+    //   this.display.includes(".") &&
+    //   parseFloat(this.display) < 10 ** this.#MAX_DIGITS &&
+    //   parseFloat(this.display) >= 0.1 ** this.#MAX_DIGITS
+    // ) {
+    //   let [whole, fractional] = this.display.split(".");
+    //   console.log(`"${whole}" "${fractional}"`);
+    //   if (fractional) {
+    //     fractional = parseFloat("." + fractional).toFixed(
+    //       this.#MAX_DIGITS - whole.length
+    //     );
+    //     this.display = whole + fractional;
+    //   }
+    // }
+    //
+    // // Turn to scientific notation when necessary.
+    // else if (
+    //   parseFloat(this.display.replace("-", "")) > 1 / 10 ** this.MAX_DIGITS &&
+    //   !this.#digitSpace(this.#MAX_DIGITS + 1)
+    // ) {
+    //   this.display = parseFloat(this.display)
+    //     .toExponential(this.#MAX_DIGITS - 1)
+    //     .replace(/\.([0-9]*[1-9])?0*/g, ".$1"); // Trim trailing zeroes.
+    // }
+  }
+
+  #digitSpace(max) {
+    return this.display.replaceAll(/[^0-9]/g, "").length < max;
+  }
+
+  #addCommas(str) {
+    return str.replaceAll(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 }
 
