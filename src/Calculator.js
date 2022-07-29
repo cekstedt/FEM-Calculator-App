@@ -21,11 +21,12 @@ class Calculator {
   #lastOperator;
   #lastKeyOperatorFlag;
   #lastKeyEqualsFlag;
-  #MAX_DIGITS = 16;
+  MAX_DIGITS;
 
   // Constructor.
 
-  constructor() {
+  constructor(max_digits = 16) {
+    this.MAX_DIGITS = max_digits;
     for (const num of this.#numerals) {
       this.#pressMap.set(num, this.#numeralKey.bind(this));
     }
@@ -83,7 +84,7 @@ class Calculator {
     if (this.#lastKeyOperatorFlag || this.#lastKeyEqualsFlag) {
       this.display = key;
       this.#lastOperator = this.activeOperator;
-    } else if (this.#digitSpace(this.#MAX_DIGITS)) {
+    } else if (this.#digitSpace(this.MAX_DIGITS)) {
       this.display += key;
     }
     this.#lastKeyOperatorFlag = false;
@@ -198,10 +199,41 @@ class Calculator {
     if (
       this.display.length > 1 &&
       this.display[0] === "0" &&
-      this.display.slice(0, 2) != "0."
+      this.display.slice(0, 2) !== "0."
     ) {
       this.display = this.display.slice(1);
     }
+
+    // // Truncate decimals when too long.
+    // if (
+    //   this.display.includes(".") &&
+    //   parseFloat(this.display) < 10 ** this.MAX_DIGITS &&
+    //   parseFloat(this.display) >= 0.1 ** this.MAX_DIGITS
+    // ) {
+    //   let [whole, fractional] = this.display.split(".");
+    //   console.log(`"${whole}" "${fractional}"`);
+    //   if (fractional) {
+    //     fractional = parseFloat("." + fractional).toFixed(
+    //       this.MAX_DIGITS - whole.length
+    //     );
+    //     this.display = whole + fractional;
+    //   }
+    // }
+    //
+
+    // Turn to scientific notation when necessary.
+    if (
+      parseFloat(this.display.replace("-", "")) >= 10 ** this.MAX_DIGITS ||
+      (parseFloat(this.display.replace("-", "")) < 0.1 ** this.MAX_DIGITS &&
+        parseFloat(this.display) !== 0)
+    ) {
+      this.display = parseFloat(this.display).toExponential(
+        this.MAX_DIGITS - 1
+      );
+    }
+
+    // Trim trailing zeroes.
+    // this.display = this.display.replace(/\.([0-9]*[1-9])?0*$/g, ".$1");
 
     // Add commas where necessary
     if (this.display.includes(".")) {
@@ -210,32 +242,6 @@ class Calculator {
     } else {
       this.display = this.#addCommas(this.display);
     }
-
-    // // Truncate decimals when too long.
-    // if (
-    //   this.display.includes(".") &&
-    //   parseFloat(this.display) < 10 ** this.#MAX_DIGITS &&
-    //   parseFloat(this.display) >= 0.1 ** this.#MAX_DIGITS
-    // ) {
-    //   let [whole, fractional] = this.display.split(".");
-    //   console.log(`"${whole}" "${fractional}"`);
-    //   if (fractional) {
-    //     fractional = parseFloat("." + fractional).toFixed(
-    //       this.#MAX_DIGITS - whole.length
-    //     );
-    //     this.display = whole + fractional;
-    //   }
-    // }
-    //
-    // // Turn to scientific notation when necessary.
-    // else if (
-    //   parseFloat(this.display.replace("-", "")) > 1 / 10 ** this.MAX_DIGITS &&
-    //   !this.#digitSpace(this.#MAX_DIGITS + 1)
-    // ) {
-    //   this.display = parseFloat(this.display)
-    //     .toExponential(this.#MAX_DIGITS - 1)
-    //     .replace(/\.([0-9]*[1-9])?0*/g, ".$1"); // Trim trailing zeroes.
-    // }
   }
 
   #digitSpace(max) {

@@ -38,8 +38,6 @@ const keyboardKeys = new Set(
 
 document.addEventListener("keydown", function(event) {
   if (keyboardKeys.has(event.key)) {
-    // e.target.classList.toggle("active-button");
-
     if (event.key === "c") {
       calc.press("C");
       flicker(document.getElementById("RESET"));
@@ -49,6 +47,8 @@ document.addEventListener("keydown", function(event) {
     } else if (event.key === "Enter") {
       calc.press("=");
       flicker(document.getElementById("EQUALS"));
+    } else if (event.key === "n" || event.key === "N") {
+      calc.press("±");
     } else {
       calc.press(event.key);
       flicker(document.getElementById(idMap[event.key]));
