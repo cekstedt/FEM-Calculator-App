@@ -1,3 +1,5 @@
+import formatNumber from "./formatNumber.js";
+
 class Calculator {
   // Variable initialization.
 
@@ -15,6 +17,9 @@ class Calculator {
     .concat(this.#numerals);
 
   #pressMap = new Map();
+
+  display;
+  activeOperator;
 
   #hiddenOperand;
   #chainValue;
@@ -47,7 +52,7 @@ class Calculator {
   press(key) {
     this.display = this.display.replaceAll(",", "");
     this.#pressMap.get(key)(key);
-    this.#cleanupDisplay();
+    this.display = formatNumber(this.display, this.MAX_DIGITS);
   }
 
   // Convenience method, to send a string of 1 char keypresses.
@@ -189,67 +194,8 @@ class Calculator {
 
   // Utility Functions.
 
-  #cleanupDisplay() {
-    // Turn empty inputs into zero.
-    if (["", "-", "-0"].includes(this.display)) {
-      this.display = "0";
-    }
-
-    // Trim leading zeroes when not necessary.
-    if (
-      this.display.length > 1 &&
-      this.display[0] === "0" &&
-      this.display.slice(0, 2) !== "0."
-    ) {
-      this.display = this.display.slice(1);
-    }
-
-    // // Truncate decimals when too long.
-    // if (
-    //   this.display.includes(".") &&
-    //   parseFloat(this.display) < 10 ** this.MAX_DIGITS &&
-    //   parseFloat(this.display) >= 0.1 ** this.MAX_DIGITS
-    // ) {
-    //   let [whole, fractional] = this.display.split(".");
-    //   console.log(`"${whole}" "${fractional}"`);
-    //   if (fractional) {
-    //     fractional = parseFloat("." + fractional).toFixed(
-    //       this.MAX_DIGITS - whole.length
-    //     );
-    //     this.display = whole + fractional;
-    //   }
-    // }
-    //
-
-    // Turn to scientific notation when necessary.
-    if (
-      parseFloat(this.display.replace("-", "")) >= 10 ** this.MAX_DIGITS ||
-      (parseFloat(this.display.replace("-", "")) < 0.1 ** this.MAX_DIGITS &&
-        parseFloat(this.display) !== 0)
-    ) {
-      this.display = parseFloat(this.display).toExponential(
-        this.MAX_DIGITS - 1
-      );
-    }
-
-    // Trim trailing zeroes.
-    // this.display = this.display.replace(/\.([0-9]*[1-9])?0*$/g, ".$1");
-
-    // Add commas where necessary
-    if (this.display.includes(".")) {
-      let [whole, fractional] = this.display.split(".");
-      this.display = this.#addCommas(whole) + "." + fractional;
-    } else {
-      this.display = this.#addCommas(this.display);
-    }
-  }
-
   #digitSpace(max) {
     return this.display.replaceAll(/[^0-9]/g, "").length < max;
-  }
-
-  #addCommas(str) {
-    return str.replaceAll(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 }
 

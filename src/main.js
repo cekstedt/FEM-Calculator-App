@@ -1,7 +1,7 @@
 import Calculator from "./calculator.js";
 import themes from "./themes.js";
 
-const calc = new Calculator();
+const calc = new Calculator(12);
 const keyMap = {
   ADD: "+",
   SUBTRACT: "-",
@@ -33,7 +33,7 @@ keysContainer.addEventListener("click", e => {
 
 // Hook up keyboard keys with Calculator object.
 const keyboardKeys = new Set(
-  [..."0123456789.+-/*=Cc"].concat(["Backspace", "Enter"])
+  [..."0123456789.+-/*=CcDdNn"].concat(["Backspace", "Enter"])
 );
 
 document.addEventListener("keydown", function(event) {

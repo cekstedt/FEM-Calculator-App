@@ -349,7 +349,7 @@ describe("Proper output formatting", () => {
     testCalc.pressMany("4294967296*4294967296=");
     expect(testCalc.getDisplay()).toBe("1.844674407370955e+19");
     testCalc.pressMany("C1000000000000000*10=");
-    expect(testCalc.getDisplay()).toBe("1.e+16");
+    expect(testCalc.getDisplay()).toBe("1e+16");
   });
 
   it("only uses scientific notation after maximum decimal places.", () => {
