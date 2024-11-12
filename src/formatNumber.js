@@ -1,6 +1,6 @@
 export default function formatNumber(display, numDigits) {
   // Turn empty inputs into zero.
-  if (["", "-", "-0"].includes(display)) {
+  if ([""].includes(display)) {
     display = "0";
   }
 
@@ -12,39 +12,6 @@ export default function formatNumber(display, numDigits) {
   ) {
     display = display.slice(1);
   }
-
-  // // Truncate decimals when too long.
-  // if (
-  //   this.display.includes(".") &&
-  //   parseFloat(this.display) < 10 ** this.MAX_DIGITS &&
-  //   parseFloat(this.display) >= 0.1 ** this.MAX_DIGITS
-  // ) {
-  //   let [whole, fractional] = this.display.split(".");
-  //   console.log(`"${whole}" "${fractional}"`);
-  //   if (fractional) {
-  //     fractional = parseFloat("." + fractional).toFixed(
-  //       this.MAX_DIGITS - whole.length
-  //     );
-  //     this.display = whole + fractional;
-  //   }
-  // }
-  //
-
-  // Turn to scientific notation when necessary.
-  if (
-    parseFloat(display.replace("-", "")) >= 10 ** numDigits ||
-    (parseFloat(display.replace("-", "")) < 0.1 ** numDigits &&
-      parseFloat(display) !== 0)
-  ) {
-    if (digitLength(parseFloat(display).toExponential()) <= numDigits) {
-      display = parseFloat(display).toExponential();
-    } else {
-      display = parseFloat(display).toExponential(numDigits - 1);
-    }
-  }
-
-  // Trim trailing zeroes.
-  // display = display.replace(/\.([0-9]*[1-9])?0*$/g, ".$1");
 
   // Add commas where necessary
   if (display.includes(".")) {
@@ -64,5 +31,5 @@ function addCommas(str) {
 }
 
 function digitLength(num) {
-  return num.replace(".", "").length;
+  return num.replace(/[\.\-]/g, "").length;
 }

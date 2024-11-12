@@ -12,9 +12,9 @@ class Calculator {
 
   #numerals = [..."0123456789"];
 
-  #validKeys = [..."CD.±="]
-    .concat(Object.keys(this.#operators))
-    .concat(this.#numerals);
+  // #validKeys = [..."CD.±="]
+  //   .concat(Object.keys(this.#operators))
+  //   .concat(this.#numerals);
 
   #pressMap = new Map();
 

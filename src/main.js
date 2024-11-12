@@ -1,7 +1,7 @@
-import Calculator from "./calculator.js";
+import Calculator from "./Calculator.js";
 import themes from "./themes.js";
 
-const calc = new Calculator(12);
+window.calc = new Calculator(12);
 const keyMap = {
   ADD: "+",
   SUBTRACT: "-",
@@ -25,8 +25,8 @@ keysContainer.addEventListener("click", e => {
     const key = e.target;
     const name = key.name;
     if (Object.keys(keyMap).includes(name)) {
-      calc.press(keyMap[name]);
-      result.textContent = calc.getDisplay();
+      window.calc.press(keyMap[name]);
+      result.textContent = window.calc.getDisplay();
     }
   }
 });
@@ -39,21 +39,21 @@ const keyboardKeys = new Set(
 document.addEventListener("keydown", function(event) {
   if (keyboardKeys.has(event.key)) {
     if (event.key === "c") {
-      calc.press("C");
+      window.calc.press("C");
       flicker(document.getElementById("RESET"));
     } else if (event.key === "Backspace") {
-      calc.press("D");
+      window.calc.press("D");
       flicker(document.getElementById("DELETE"));
     } else if (event.key === "Enter") {
-      calc.press("=");
+      window.calc.press("=");
       flicker(document.getElementById("EQUALS"));
     } else if (event.key === "n" || event.key === "N") {
-      calc.press("±");
+      window.calc.press("±");
     } else {
-      calc.press(event.key);
+      window.calc.press(event.key);
       flicker(document.getElementById(idMap[event.key]));
     }
-    result.textContent = calc.getDisplay();
+    result.textContent = window.calc.getDisplay();
   }
 });
 
@@ -85,7 +85,7 @@ function makeSymmetricalObject(arr) {
   }, {});
 }
 
-// Flips and object's keys and values.
+// Flips an object's keys and values.
 // ex: {1: "a", 2: "b", 3: "c"} => {a: 1, b: 2, c: 3}
 function invertObject(obj) {
   return Object.entries(obj).reduce((ret, entry) => {
@@ -95,6 +95,7 @@ function invertObject(obj) {
   }, {});
 }
 
+// Visually flicker a button by toggling "active-button" css class.
 function flicker(target) {
   target.classList.toggle("active-button");
   setTimeout(function() {

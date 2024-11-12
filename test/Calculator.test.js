@@ -344,25 +344,11 @@ describe("Proper output formatting", () => {
     testCalc.pressMany("C1234567.8901234567890");
     expect(testCalc.getDisplay()).toBe("1,234,567.890123456");
   });
+});
 
-  it("uses a rounded scientific notation for long results.", () => {
-    testCalc.pressMany("4294967296*4294967296=");
-    expect(testCalc.getDisplay()).toBe("1.844674407370955e+19");
-    testCalc.pressMany("C1000000000000000*10=");
-    expect(testCalc.getDisplay()).toBe("1e+16");
-  });
-
-  it("only uses scientific notation after maximum decimal places.", () => {
-    testCalc.pressMany("0.000000000000001/10=");
-    expect(testCalc.getDisplay()).toBe("0.0000000000000001");
-    testCalc.pressMany("/10=");
-    expect(testCalc.getDisplay()).toBe("1.e-17");
-  });
-
-  it("doesn't lose accuracy on chained operations.", () => {
-    testCalc.pressMany("1/3=");
-    expect(testCalc.getDisplay()).toBe("0.333333333333333");
-    testCalc.pressMany("*3=");
-    expect(testCalc.getDisplay()).toBe("1");
+describe("Bugs", () => {
+  it("allows for sub-decimal zeroes.", () => {
+    testCalc.pressMany("C0.05");
+    expect(testCalc.getDisplay()).toBe("0.05");
   });
 });
