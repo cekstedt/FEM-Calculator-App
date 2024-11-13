@@ -1,4 +1,4 @@
-import Calculator from "../src/Calculator";
+import Calculator from "../js/Calculator";
 
 let testCalc;
 
