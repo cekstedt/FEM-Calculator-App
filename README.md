@@ -26,14 +26,14 @@ This is a solution to the [Calculator app challenge on Frontend Mentor](https://
 ### Links
 
 - Solution URL: [Github](https://github.com/cekstedt/FEM-Calculator-App)
-- Live Site URL: [Netlify](https://illustrious-gnome-c6eb70.netlify.app/)
+- Live Site URL: [Netlify](https://vermillion-druid-900d9f.netlify.app/)
 
 ## My process
 
 ### Built with
 
-- Semantic HTML5 markup
-- Object Oriented Sass (OOSCSS)
+- Test Driven Development (Jest)
+- Vite
 
 ## Author
 
