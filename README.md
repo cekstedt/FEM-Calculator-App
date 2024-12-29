@@ -10,6 +10,7 @@ This is a solution to the [Calculator app challenge on Frontend Mentor](https://
   - [Links](#links)
 - [My process](#my-process)
   - [Built with](#built-with)
+  - [How to install and run](#how-to-install-and-run)
 - [Author](#author)
 
 ## Overview
@@ -27,6 +28,7 @@ This is a solution to the [Calculator app challenge on Frontend Mentor](https://
 
 - Solution URL: [Github](https://github.com/cekstedt/FEM-Calculator-App)
 - Live Site URL: [Netlify](https://vermillion-druid-900d9f.netlify.app/)
+- Challenge URL: [Frontend Mentor](https://www.frontendmentor.io/challenges/calculator-app-9lteq5N29)
 
 ## My process
 
@@ -34,6 +36,29 @@ This is a solution to the [Calculator app challenge on Frontend Mentor](https://
 
 - Test Driven Development (Jest)
 - Vite
+
+### How to install and run
+
+Make sure you have node.js installed.
+```
+node -v
+```
+
+Clone into the repo.
+```
+git clone https://github.com/cekstedt/FEM-Calculator-App
+```
+
+Navigate into the root project folder and install developer dependencies.
+```
+cd FEM-Calculator-App/
+npm install
+```
+#### Commands
+
+- `npm run dev` will start your development server with vite.
+- `npm run build` will create your production-ready `dist` directory.
+- `npm run test` will run all of the tests to ensure that the calculator functions correctly.
 
 ## Author
 
