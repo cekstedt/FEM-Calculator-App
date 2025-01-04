@@ -6,8 +6,8 @@
     "hosted": "https://vermillion-druid-900d9f.netlify.app/",
     "original": false,
     "personal": false,
-    "thumbnail": "desktop-screenshot.png",
+    "thumbnail": "thumbnail.png",
     "technologies": ["html", "css", "js", "vite", "jest", "babel"],
-    "status": "complete",
+    "complete": true,
     "priority": "done"
   }
